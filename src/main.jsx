@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { ArrowLeft, ArrowRight, Instagram, Link2, RotateCcw, MessageCircle, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Instagram, Link2, RotateCcw, Share2, X } from 'lucide-react';
 import { SITE } from './content/site.js';
 import { TESTS } from './content/tests/index.js';
 import { calculateResult, validateTest } from './core/engine.js';
@@ -24,17 +24,6 @@ function readResult(test) {
   const key = new URLSearchParams(location.search).get('result');
   return key && Object.prototype.hasOwnProperty.call(test.results, key) ? key : null;
 }
-function loadKakao(key) {
-  if (!key) return Promise.resolve(false);
-  if (window.Kakao) { if (!window.Kakao.isInitialized()) window.Kakao.init(key); return Promise.resolve(true); }
-  return new Promise(resolve => {
-    const script = document.createElement('script');
-    script.src = 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js';
-    script.onload = () => { try { window.Kakao.init(key); resolve(true); } catch { resolve(false); } };
-    script.onerror = () => resolve(false);
-    document.head.appendChild(script);
-  });
-}
 
 function App() {
   const [route, setRoute] = useState(readRoute);
@@ -42,6 +31,7 @@ function App() {
   const [answers, setAnswers] = useState([]);
   const [finished, setFinished] = useState(false);
   const [toast, setToast] = useState('');
+  const canNativeShare = typeof navigator.share === 'function' && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   const current = PUBLISHED.find(t => t.id === route.id);
   // 공유된 결과 URL로 직접 들어올 때도 결과 페이지가 열립니다.
   const sharedResultKey = current ? readResult(current) : null;
@@ -67,21 +57,19 @@ function App() {
     try { await navigator.clipboard.writeText(resultUrl); notice('링크를 복사했어요!'); }
     catch { notice('주소창에서 링크를 복사해 주세요.'); }
   }
-  async function shareKakao() {
-    const ready = await loadKakao(SITE.kakaoJavascriptKey);
-    if (!ready) { await copyLink(); notice('카카오 키 미설정: 링크를 복사했어요.'); return; }
+  async function shareResult() {
+    // 모바일에서는 휴대폰 기본 공유 메뉴 사용 (카카오톡 등 설치된 앱 선택 가능).
+    if (!canNativeShare) { await copyLink(); return; }
     try {
-      window.Kakao.Share.sendDefault({
-        objectType: 'feed',
-        content: {
-          title: result ? `${current.title} - ${result.title}` : current.title,
-          description: result?.subtitle || current.subtitle || '테스트 해보기',
-          imageUrl: new URL(imagePath(current.thumbnail || '/images/hello-beta.svg'), location.origin).href,
-          link: { mobileWebUrl: resultUrl, webUrl: resultUrl },
-        },
-        buttons: [{ title: '테스트 보러가기', link: { mobileWebUrl: resultUrl, webUrl: resultUrl } }],
+      await navigator.share({
+        title: result ? `${current.title} - ${result.title}` : current.title,
+        text: result ? `내 결과는 '${result.title}'! 너도 해봐 ✨` : '이 테스트 한번 해봐 ✨',
+        url: resultUrl,
       });
-    } catch { notice('카카오 공유 설정을 확인해 주세요.'); }
+    } catch (error) {
+      // 사용자가 공유창을 닫았을 경우는 오류가 아닙니다.
+      if (error?.name !== 'AbortError') await copyLink();
+    }
   }
   function choose(index) {
     const next = [...answers]; next[step] = index; setAnswers(next);
@@ -107,10 +95,16 @@ function App() {
         <p className="result-lead">나의 테스트 결과는?</p><h1>{result.title}</h1>
         <h2>{result.subtitle}</h2><p className="result-description">{result.description}</p>
         {result.traits?.length > 0 && <div className="traits">{result.traits.map(t => <span key={t}>#{t.replaceAll(' ', '')}</span>)}</div>}
-        <div className="action-list"><button className="kakao-btn" onClick={shareKakao}><MessageCircle size={19}/> 카카오톡 공유</button>
+        <div className="action-list">
+          {canNativeShare && <button className="share-btn" onClick={shareResult}><Share2 size={19}/> 결과 공유하기</button>}
           <button className="secondary-btn" onClick={copyLink}><Link2 size={18}/> 링크 복사</button>
           <button className="ghost-btn" onClick={restart}><RotateCcw size={17}/> 다시 테스트하기</button>
           <button className="ghost-btn" onClick={() => navigate(pagePath())}>다른 테스트 보기 <ArrowRight size={17}/></button></div>
+        <div className="result-instagram">
+          {SITE.instagramUrl
+            ? <a className="instagram-link" href={SITE.instagramUrl} target="_blank" rel="noopener noreferrer"><Instagram size={20}/> 인스타그램 바로가기 <ArrowRight size={16}/></a>
+            : <div className="instagram-link is-placeholder" aria-label="인스타그램 링크 준비 중"><Instagram size={20}/> 인스타그램 바로가기 <span className="instagram-soon">준비 중</span></div>}
+        </div>
       </section> : step < 0 ? <section className="panel intro">
         <div className={`intro-image ${current.theme || 'lilac'}`}>{current.thumbnail ? <img src={imagePath(current.thumbnail)} alt=""/> : <span>{current.emoji || '✨'}</span>}</div>
         <h1>{current.title}</h1><p>{current.subtitle}</p>
