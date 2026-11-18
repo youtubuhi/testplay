@@ -90,11 +90,14 @@ function App() {
     </main> : current ? <main className="container player">
       <button className="back" onClick={() => navigate(pagePath())}><ArrowLeft size={16}/> 전체 테스트</button>
       {result ? <section className="panel result-panel">
-        <span className="overline">YOUR RESULT ✦</span>
-        <div className={`result-image ${current.theme || 'lilac'}`}>{result.image ? <img src={imagePath(result.image)} alt={result.title}/> : <span>{result.emoji || '✨'}</span>}</div>
-        <p className="result-lead">나의 테스트 결과는?</p><h1>{result.title}</h1>
-        <h2>{result.subtitle}</h2><p className="result-description">{result.description}</p>
-        {result.traits?.length > 0 && <div className="traits">{result.traits.map(t => <span key={t}>#{t.replaceAll(' ', '')}</span>)}</div>}
+        <div className="result-hero" style={{backgroundColor: result.color || undefined}}>
+          <h1>{result.title}</h1>
+          <p className="result-lead">이거 제 이모지양 🤨</p>
+          <div className="result-image">{result.image ? <img src={imagePath(result.image)} alt={result.title}/> : <span role="img" aria-label={result.title}>{result.emoji || '✨'}</span>}</div>
+          <h2>{result.subtitle}</h2>
+        </div>
+        <div className="result-copy"><h3>이런 사람입니다 💬</h3><p className="result-description">{result.description}</p>
+        {result.traits?.length > 0 && <ul className="traits">{result.traits.map((t,i) => <li key={i}>{t}</li>)}</ul>}</div>
         <div className="action-list">
           {canNativeShare && <button className="share-btn" onClick={shareResult}><Share2 size={19}/> 결과 공유하기</button>}
           <button className="secondary-btn" onClick={copyLink}><Link2 size={18}/> 링크 복사</button>

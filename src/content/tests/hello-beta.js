@@ -9,6 +9,7 @@ export default {
   category: 'fun',
   thumbnail: '/images/hello-beta.svg',
   theme: 'peach',
+  published: false, // 🟢 기존 테스트 보존, 메인에서는 숨김
   questions: [
     { text: '안녕하세요', options: [
       { text: '예', scores: { yes: 1 } },

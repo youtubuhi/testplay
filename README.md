@@ -63,3 +63,18 @@
 홈 → '안녕하세요' 썸네일 선택 → 시작하기 → '예' 또는 '아니오' → 각각 다른 결과 → 모바일 공유 또는 링크 복사/다시하기/다른 테스트/인스타그램 영역.
 
 이 베타는 별도 DB, 방문자 통계, 광고, 관리자 화면은 포함하지 않습니다.
+
+## 🎉 현재 공개 테스트: 나는 어떤 이모지일까?
+- `src/content/tests/emoji-me.js`: **🟢 사용자 수정** 질문 9개, 선택지, 결과 8종, 설명 및 색상
+- `public/images/emoji-me.svg`: **🟢 사용자 수정** 메인 썸네일 이미지
+- `src/content/site.js`: **🟢 사용자 수정** 인스타그램 주소 (`instagramUrl`)
+- `src/core/engine.js` 및 `src/main.jsx`: **🔒 시스템 영역** (결과 계산 및 공통 페이지)
+- 기존 `hello-beta.js`, `office-persona.js`, `weekend-mode.js`는 **삭제하지 않고 비공개 상태**로 보존했습니다.
+- 결과 계산은 내부에서만 이루어지고, 검사 기준이나 내부 코드가 결과 페이지·공유 메시지에 노출되지 않습니다.
+- 기존 GitHub Actions 배포 설정을 그대로 유지합니다.
+- GitHub 업로드 시 기존 파일과 같은 경로로 덮어쓰기 하세요. `.github/workflows/deploy.yml`은 수정할 필요가 없습니다.
+
+## 표지 이미지 업데이트
+- `public/images/emoji-me-cover.png` : 정사각형 그림판 스타일 표지
+- `src/content/tests/emoji-me.js` : `thumbnail: '/images/emoji-me-cover.png'` 로 연결
+- 기존 SVG 및 이전 데이터, GitHub Pages 설정은 유지
