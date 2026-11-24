@@ -3,7 +3,7 @@ export const SITE = {
   name: 'TEST PLAY',
   tagline: '가볍게 즐기는 별별 테스트',
   footer: '가볍게 즐기는 별별 테스트 모음집',
-  instagramUrl: '', // 🟢 예: 'https://www.instagram.com/계정명/' (비워두면 결과 화면에 '준비 중' 표시)
+  instagramUrl: 'https://www.instagram.com/testplay.zip/', // 🟢 예: 'https://www.instagram.com/계정명/' (비워두면 결과 화면에 '준비 중' 표시)
 };
 
 // 🟢 테스트가 늘어나면 아래 카테고리가 자동 노출됩니다. 지금은 테스트 목록만 표시합니다.
