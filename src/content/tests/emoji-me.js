@@ -22,7 +22,12 @@ export default {
   theme: 'peach',
   published: true,
   // 🔒 결과 계산용 내부 규칙: 질문마다 어느 쪽을 선택했는지 세어 최종 결과 결정
+  createdAt: '2026-11-18',
+  keywords: ['이모지', '성격'],
+  resultHeading: '이거 제 이모지양 🤨',
+  descriptionHeading: '이런 사람입니다 💬',
   scoring: {
+    mode: 'dimension',
     dimensions: ['social', 'response', 'routine'],
     outcomeMap: {
       'a-a-a': 'bomb', 'a-a-b': 'bold',

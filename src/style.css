@@ -65,7 +65,7 @@ a { color: inherit; text-decoration: none; }
 .intro p { margin: 0 0 29px; font-size: 15px; line-height: 1.7; color: var(--muted); }
 .primary-btn,.share-btn,.secondary-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 58px; padding: 13px 18px; font-size: 16px; font-weight: 900; border-radius: 15px; transition: transform .13s ease,background .13s ease; }
 .primary-btn { max-width: 350px; margin: auto; border: 0; color: white; background: var(--purple); box-shadow: 0 5px 0 var(--purple-dark); }
-.primary-btn:hover,.share-btn:hover { background: #6645b1; }
+.primary-btn:hover,.share-btn:hover { background: var(--purple-dark); }
 .primary-btn:active,.share-btn:active,.secondary-btn:active { transform: translateY(3px); }
 
 /* 04. 질문: 카드의 중심이 질문과 답변이 되도록 */
@@ -73,12 +73,12 @@ a { color: inherit; text-decoration: none; }
 .progress-label { color: var(--purple); font-weight: 900; font-size: 14px; display: flex; align-items: center; justify-content: space-between; }
 .progress-label span { border-radius: 999px; background: #f4edff; padding: 6px 12px; font-size: 13px; }
 .progress { margin: 12px 0 49px; height: 10px; border-radius: 999px; background: #eee6f8; overflow: hidden; }
-.progress > div { height: 100%; border-radius: inherit; background: linear-gradient(90deg,#ff98ba,#9d77d9); transition: width .24s ease; }
+.progress > div { height: 100%; border-radius: inherit; background: linear-gradient(90deg,#ff98ba,var(--purple)); transition: width .24s ease; }
 .question-panel h1 { margin: 0 0 43px; text-align: center; font-size: clamp(22px,3.5vw,27px); font-weight: 900; line-height: 1.62; letter-spacing: -.65px; word-break: keep-all; }
 .options { display: grid; gap: 13px; }
 .options button { min-height: 70px; width: 100%; padding: 17px 18px 17px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 2px solid #e9deee; border-radius: 16px; background: #fffafd; color: #43384c; text-align: left; font-size: 15px; font-weight: 800; line-height: 1.65; box-shadow: 0 3px 0 #f0e7f2; transition: background .15s,border-color .15s,transform .15s; }
 .options button svg { color: #a88ac3; flex: 0 0 auto; }
-.options button:hover { background: #f3eaff; border-color: #b99bdd; transform: translateY(-2px); }
+.options button:hover { background: #f3eaff; border-color: var(--purple); transform: translateY(-2px); }
 .options button:active { background: #eadcfb; transform: translateY(1px); }
 .ghost-btn { background: transparent; border: 0; color: #947e9e; padding: 13px; display: flex; justify-content: center; align-items: center; gap: 7px; font-size: 14px; font-weight: 800; }
 .ghost-btn:hover { color: var(--purple-dark); }
@@ -118,6 +118,24 @@ footer p { margin: 8px 0; }
 footer a { display: inline-flex; align-items: center; gap: 6px; margin-top: 7px; }
 .toast { position: fixed; z-index: 20; left: 50%; bottom: 25px; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; width: max-content; max-width: calc(100% - 30px); padding: 13px 17px; border-radius: 12px; background: #41324f; color: white; font-size: 13px; box-shadow: 0 10px 25px #0002; }
 .toast button { padding: 0; border: 0; display: flex; background: transparent; color: inherit; }
+
+/* 공통 검색, 추천 및 이미지형 문항 */
+.featured {margin-bottom:32px;}
+.featured h2 {font-size:18px;}
+.home-tools {display:grid;gap:12px;margin-bottom:24px;}
+.home-tools input {width:100%;padding:13px 16px;border:2px solid var(--line);border-radius:14px;background:white;font:inherit;}
+.category-list {display:flex;flex-wrap:wrap;gap:8px;}
+.category-list button {padding:8px 15px;border:1px solid var(--line);border-radius:99px;background:white;color:var(--ink);font:inherit;cursor:pointer;}
+.category-list button[aria-pressed=true] {background:var(--purple);color:white;}
+.new-label {position:absolute;top:8px;right:8px;background:white;border-radius:8px;padding:4px 8px;font-size:11px;color:var(--purple);}
+.score-box {margin:20px auto 0;max-width:350px;}
+.score-box .progress {margin:10px 0 0;}
+.question-image {display:block;width:100%;max-height:300px;object-fit:contain;margin:0 auto 20px;}
+.option-image {width: min(36%,120px);max-height:110px;object-fit:contain;border-radius:8px;}
+.options button span {flex:1;}
+.recommendations {margin-top:30px;}
+.recommendations .test-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+.ad-slot {margin:16px 0;}
 
 @media(max-width:800px){
   .test-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 26px 14px; }
